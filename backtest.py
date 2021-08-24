@@ -115,6 +115,43 @@ class Backtest:
 
     def graph_smac(self, ind):
         df = self.dfs[ind]
+        print(df.columns)
+        plt.figure()
+        """
+        plot profit/loss bars
+        df['short_p-l'], df['long_p-l']
+        """
+        # bars
+        plt.subplot(211)
+        short_pl_inds = df.loc[df["short_p-l"] != 0.0].index
+        short_pl = df["short_p-l"][short_pl_inds]
+        short_x_ax = range(1, len(short_pl_inds) * 2, 2)
+        plt.bar(short_x_ax, short_pl, color="red", label="short pos profit/loss")
+        long_pl_inds = df.loc[df["long_p-l"] != 0.0].index
+        long_pl = df["long_p-l"][long_pl_inds]
+        long_x_ax = range(0, len(long_pl_inds) * 2, 2)
+        plt.bar(long_x_ax, long_pl, color="green", label="long pos profit/loss")
+        # plt.subplot(212)
+        # plt.plot(df.index, df["long_capital"], color="green", label="long")
+        # plt.plot(df.index, df["short_capital"], color="red", label="short")
+        plt.legend()
+        plt.subplot(212)
+        """
+        text annotation for p/l's of buys and sells
+        """
+        # plt.text(long_pl_inds[0], 50, "hello")
+        for i in range(len(long_pl_inds)):
+            plt.text(
+                long_pl_inds[i],
+                df["Close"][long_pl_inds[i]] - 5,
+                f"long={round(long_pl[i])}",
+            )
+        for i in range(len(short_pl_inds)):
+            plt.text(
+                short_pl_inds[i],
+                df["Close"][short_pl_inds[i]] + 5,
+                f"short={round(short_pl[i])}",
+            )
         """
         plots for buys
         signals either 1.0 or -1.0 for buy or sell 
@@ -127,16 +164,18 @@ class Backtest:
         # plots for sells
         sell_xs = df.loc[df["signals"] == -1.0].index
         sell_ys = df.Close[sell_xs]
-        fig = plt.figure()
-        ax1 = fig.add_subplot(111)
         # lines
-        ax1.plot(df.index, df["Close"])
-        ax1.plot(df.index, df["sma_slow"])
-        ax1.plot(df.index, df["sma_fast"])
+        plt.plot(df.index, df["Close"], color="black", label="close")
+        plt.plot(df.index, df["sma_slow"], color="red", label="slow ma")
+        plt.plot(df.index, df["sma_fast"], color="blue", label="fast ma")
         # markers
-        ax1.plot(buy_xs, buy_ys, "^", markersize=10, color="g")
-        ax1.plot(sell_xs, sell_ys, "*", markersize=10, color="r")
-        # bars
+        plt.plot(
+            buy_xs, buy_ys, "^", markersize=10, color="g", label="long pos crossover"
+        )
+        plt.plot(
+            sell_xs, sell_ys, "v", markersize=10, color="r", label="short pos crossover"
+        )
+        plt.legend()
         plt.show()
 
 
