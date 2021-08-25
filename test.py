@@ -8,9 +8,9 @@ df = pa_da.get_data_yahoo("aapl", "2018-01-01", "2019-01-01")
 
 print(df)
 
-# backtest('smac', df, fast_period=15, slow_period=40)
+l = Backtest("smac", [df], fast_period=15, slow_period=40)
 
-l = Backtest("smac", [df], fast_period=5, slow_period=30, long=True, short=True)
+# l = Backtest("rsi", [df], rsi_period=14, upper_bound=70, lower_bound=30)
 
 l.graph(0)
 
