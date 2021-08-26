@@ -11,7 +11,7 @@ def calculate_portfolio(obj, df, indicator_type):
         only take first df.signal of 1.0, -1.0, 
         maybe series before you reach next sell signal
     indicator_type:: 'stockstats' or 'tapy':
-                    indicate if 'close' or 'Close'
+                    indicate if stockstats:'close' or tapy:'Close'
     """
     close_dic = {"tapy": "Close", "stockstats": "close"}
     close = close_dic[indicator_type]

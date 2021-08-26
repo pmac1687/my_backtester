@@ -11,11 +11,9 @@ def moving_average_crossover(obj, df, indicator):
     """
     fast_period:: int shorter ma period
     slow_period::int  longer ma period
-    long::bool enter on long positions
-    short::bool enter on short positions
     df:: single dataframe for one ticker
     strat: where fast goes above slow ma go long
-    where it goes below short
+           where it goes below short
     """
     df = Indicators(df)
     if indicator == "sma":
