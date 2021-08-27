@@ -27,7 +27,8 @@ print(df)
 #    shift_lips=3,
 # )
 
-l = Backtest("accel/decel", [df])
+# l = Backtest("accel/decel", [df])
+l = Backtest("demarker", [df], period=14)
 
 # l = Backtest("rsi", [df], rsi_period=14, upper_bound=70, lower_bound=30)
 

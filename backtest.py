@@ -10,6 +10,7 @@ import macd_strat
 import bollinger_bands_strat
 import alligator_fractal_strat
 import accel_decel_strat
+import demarker_strat
 
 pd.options.mode.chained_assignment = None  # default='warn'
 
@@ -79,6 +80,10 @@ class Backtest:
         if self.name == "accel/decel":
             for df in self.dfs:
                 accel_decel_strat.accel_decel_strategy(self, df)
+
+        if self.name == "demarker":
+            for df in self.dfs:
+                demarker_strat.demarker_strategy(self, df)
 
     def graph(self, ind):
         if self.name == "smac" or "emac":
