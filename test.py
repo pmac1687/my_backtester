@@ -1,6 +1,7 @@
 from backtest import Backtest
 import pandas_datareader as pa_da
 from tapy import Indicators
+import record
 
 
 # from fastquant import get_stock_data, backtest
@@ -28,7 +29,16 @@ print(df)
 # )
 
 # l = Backtest("accel/decel", [df])
-l = Backtest("demarker", [df], period=14)
+l = Backtest("demarker", "aapl", [df], period=range(5, 14, 3))
+
+b = Backtest("demarker", "msft", [df], period=range(5, 14, 3))
+
+lst = [b, l]
+
+for i in lst:
+
+    record.write_to_csv(i)
+
 
 # l = Backtest("rsi", [df], rsi_period=14, upper_bound=70, lower_bound=30)
 

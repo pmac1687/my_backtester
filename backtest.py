@@ -19,6 +19,7 @@ class Backtest:
     def __init__(
         self,
         name,
+        ticker,
         dfs,
         fast_period=0,
         slow_period=0,
@@ -36,6 +37,7 @@ class Backtest:
         shift_lips=0,
     ):
         self.name = name
+        self.ticker = ticker
         self.dfs = dfs
         self.fast_period = fast_period
         self.slow_period = slow_period
@@ -51,6 +53,26 @@ class Backtest:
         self.shift_jaws = shift_jaws
         self.shift_teeth = shift_teeth
         self.shift_lips = shift_lips
+        self.tested_params = []
+        self.params = [
+            self.fast_period,
+            self.slow_period,
+            self.rsi_period,
+            self.upper_bound,
+            self.lower_bound,
+            self.period_signal,
+            self.period,
+            self.deviation,
+            self.period_jaws,
+            self.period_teeth,
+            self.period_lips,
+            self.shift_jaws,
+            self.shift_teeth,
+            self.shift_lips,
+        ]
+        self.info = [x for x in self.params if x != 0]
+        self.df_results = []
+        self.indicator = ""
         if self.name == "smac":
             for df in self.dfs:
                 mac_strat.moving_average_crossover(self, df, "sma")

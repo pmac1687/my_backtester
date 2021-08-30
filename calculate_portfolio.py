@@ -13,6 +13,7 @@ def calculate_portfolio(obj, df, indicator_type):
     indicator_type:: 'stockstats' or 'tapy':
                     indicate if stockstats:'close' or tapy:'Close'
     """
+    obj.indicator = indicator_type
     close_dic = {"tapy": "Close", "stockstats": "close"}
     close = close_dic[indicator_type]
     long_capital = 100000.0
@@ -34,6 +35,8 @@ def calculate_portfolio(obj, df, indicator_type):
         df["long_positions"][i] = long_position
         df["long_capital"][i] = long_capital
     df["long_value"] = sum(df["long_p-l"])
+    df["long_buys"] = len(df["long_p-l"][df["long_p-l"] != 0.0])
+
     """
     when selling short, get percent of close price of the day selling
     than take capital from when you bought the short times sell price percent
@@ -68,7 +71,9 @@ def calculate_portfolio(obj, df, indicator_type):
         df["short_positions"][b] = short_position
         df["short_capital"][b] = short_capital
     df["short_value"] = sum(df["short_p-l"])
-    print(df)
+    df["short_sells"] = len(df["short_p-l"][df["short_p-l"] != 0.0])
+    # print(df)
+    obj.df_results.append(df)
 
 
 if __name__ == "__main__":

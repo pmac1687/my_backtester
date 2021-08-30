@@ -1,5 +1,3 @@
-Index(['High', 'Low', 'Open', 'Close', 'Volume', 'Adj Close', 'sma_fast',
-       'sma_slow', 'trend', 'signals', 'long_positions', 'long_capital',
-       'long_p-l', 'long_value', 'short_positions', 'short_capital',
-       'short_p-l', 'short_price', 'sell_price', 'short_value'],
-      dtype='object')
+rsi = 3 variables
+
+macd = 3 variables
