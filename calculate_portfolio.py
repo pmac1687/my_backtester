@@ -35,7 +35,15 @@ def calculate_portfolio(obj, df, indicator_type):
         df["long_positions"][i] = long_position
         df["long_capital"][i] = long_capital
     df["long_value"] = sum(df["long_p-l"])
+    print("long_value", sum(df["long_p-l"]))
     df["long_buys"] = len(df["long_p-l"][df["long_p-l"] != 0.0])
+    print("long buys", len(df["long_p-l"][df["long_p-l"] != 0.0]))
+    df["avg_buys"] = (
+        df["long_value"][-1] / df["long_buys"][-1] if df["long_buys"][0] != 0 else 0.0
+    )
+    print("avg", df["avg_buys"][0])
+    df["long_high"] = df["long_p-l"].max()
+    df["long_low"] = df["long_p-l"].min()
 
     """
     when selling short, get percent of close price of the day selling
@@ -70,8 +78,19 @@ def calculate_portfolio(obj, df, indicator_type):
         df["short_price"][b] = short_price
         df["short_positions"][b] = short_position
         df["short_capital"][b] = short_capital
-    df["short_value"] = sum(df["short_p-l"])
-    df["short_sells"] = len(df["short_p-l"][df["short_p-l"] != 0.0])
+    try:
+        df["short_value"] = sum(df["short_p-l"])
+        df["short_sells"] = len(df["short_p-l"][df["short_p-l"] != 0.0])
+        df["avg_sells"] = (
+            df["short_value"][-1] / df["short_sells"][-1]
+            if df["short_sells"][-1] != 0
+            else 0.0
+        )
+        df["short_high"] = df["short_p-l"].max()
+        df["short_low"] = df["short_p-l"].min()
+    except:
+        pass
+
     # print(df)
     obj.df_results.append(df)
 

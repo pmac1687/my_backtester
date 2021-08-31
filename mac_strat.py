@@ -7,7 +7,7 @@ from calculate_portfolio import calculate_portfolio
 pd.options.mode.chained_assignment = None  # default='warn'
 
 
-def moving_average_crossover(obj, df, indicator):
+def moving_average_crossover(obj, df_og, indicator):
     """
     fast_period:: int shorter ma period
     slow_period::int  longer ma period
@@ -15,23 +15,30 @@ def moving_average_crossover(obj, df, indicator):
     strat: where fast goes above slow ma go long
            where it goes below short
     """
-    df = Indicators(df)
-    if indicator == "sma":
-        df.sma(period=obj.fast_period, column_name="ma_fast", apply_to="Close")
-        df.sma(period=obj.slow_period, column_name="ma_slow", apply_to="Close")
-    if indicator == "ema":
-        df.ema(period=obj.fast_period, column_name="ma_fast", apply_to="Close")
-        df.ema(period=obj.slow_period, column_name="ma_slow", apply_to="Close")
-    df = df.df
-    df["trend"] = 0.0
-    # if fast > slow 'trend' == 1.0, else 'trend' == 0.0
-    df["trend"][obj.fast_period :] = np.where(
-        df["ma_fast"][obj.fast_period :] > df["ma_slow"][obj.fast_period :], 1.0, 0.0,
-    )
-    # when fast moves above slow signal will be 1.0 indicating buy
-    # when fast moves below slow signal will be -1.0 indicating sell
-    df["signals"] = df["trend"].diff()
-    calculate_portfolio(obj, df, "tapy")
+    prepare_params(obj)
+    obj.indicator = "tapy"
+    for param in obj.tested_params:
+        df = df_og.copy()
+        fast_period = param["fast_period"]
+        slow_period = param["slow_period"]
+        df["param"] = f"f:{fast_period} s:{slow_period}"
+        df = Indicators(df)
+        if indicator == "sma":
+            df.sma(period=fast_period, column_name="ma_fast", apply_to="Close")
+            df.sma(period=slow_period, column_name="ma_slow", apply_to="Close")
+        if indicator == "ema":
+            df.ema(period=fast_period, column_name="ma_fast", apply_to="Close")
+            df.ema(period=slow_period, column_name="ma_slow", apply_to="Close")
+        df = df.df
+        df["trend"] = 0.0
+        # if fast > slow 'trend' == 1.0, else 'trend' == 0.0
+        df["trend"][fast_period:] = np.where(
+            df["ma_fast"][fast_period:] > df["ma_slow"][fast_period:], 1.0, 0.0,
+        )
+        # when fast moves above slow signal will be 1.0 indicating buy
+        # when fast moves below slow signal will be -1.0 indicating sell
+        df["signals"] = df["trend"].diff()
+        calculate_portfolio(obj, df, "tapy")
 
 
 def graph_smac(obj, ind):
@@ -133,6 +140,41 @@ def graph_smac(obj, ind):
     )
     plt.legend()
     plt.show()
+
+
+def prepare_params(obj):
+    """
+    obj.fast_period, obj.slow_period
+    """
+    if check(obj.fast_period) or check(obj.slow_period):
+        fast = convert_to_list(obj.fast_period)
+        slow = convert_to_list(obj.slow_period)
+        obj.tested_params = make_combo_dict_arrays([fast, slow])
+    else:
+        obj.tested_params = make_combo_dict_arrays(
+            [[obj.fast_period], [obj.slow_period]]
+        )
+
+
+def check(obj):
+    """
+    check if obj is instance of  range or list
+    """
+    if isinstance(obj, range) or isinstance(obj, list):
+        return True
+    else:
+        return False
+
+
+def make_combo_dict_arrays(arr):
+    combos = [{"fast_period": x, "slow_period": y} for x in arr[0] for y in arr[1]]
+
+    return combos
+
+
+def convert_to_list(obj):
+    res = [x for x in obj] if check(obj) else [obj]
+    return res
 
 
 if __name__ == "__main__":

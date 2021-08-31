@@ -11,33 +11,47 @@ df = pa_da.get_data_yahoo("aapl", "2018-01-01", "2019-01-01")
 
 print(df)
 
-# l = Backtest("smac", [df], fast_period=15, slow_period=40)
-
-# l = Backtest("macd", [df], fast_period=12, slow_period=26, period_signal=9)
-
-# l = Backtest("bollinger_bands", [df], period=20, deviation=2)
+# l = Backtest("smac", "aapl", [df], fast_period=range(10, 20), slow_period=range(35, 45))
 
 # l = Backtest(
-#    "fractal_alligator",
+#    "macd",
+#    "aapl",
 #    [df],
-#    period_jaws=13,
-#    period_teeth=8,
-#    period_lips=5,
-#    shift_jaws=8,
-#    shift_teeth=5,
-#    shift_lips=3,
+#    fast_period=range(7, 14),
+#    slow_period=range(20, 30, 2),
+#    period_signal=range(7, 10),
 # )
+# r = [1.7, 1.8, 1.9, 2.0, 2.1, 2.2, 2.3, 2.4, 2.5]
+# l = Backtest("bollinger_bands", "aapl", [df], period=range(10, 30), deviation=r,)
+
+l = Backtest(
+    "fractal_alligator",
+    "aapl",
+    [df],
+    period_jaws=range(8, 14, 2),
+    period_teeth=range(6, 10, 2),
+    period_lips=range(3, 7, 2),
+    shift_jaws=range(4, 10, 2),
+    shift_teeth=range(3, 7, 2),
+    shift_lips=range(3, 5, 2),
+)
 
 # l = Backtest("accel/decel", [df])
-l = Backtest("demarker", "aapl", [df], period=range(5, 14, 3))
-
-b = Backtest("demarker", "msft", [df], period=range(5, 14, 3))
-
-lst = [b, l]
-
-for i in lst:
-
-    record.write_to_csv(i)
+# l = Backtest(
+#    "rsi",
+#    "aapl",
+#    [df],
+#    rsi_period=range(10, 15),
+#    upper_bound=range(68, 72),
+#    lower_bound=range(30, 32),
+# )
+#
+record.write_to_csv(l)
+# lst = [b, l]
+#
+# for i in lst:
+#
+#    record.write_to_csv(i)
 
 
 # l = Backtest("rsi", [df], rsi_period=14, upper_bound=70, lower_bound=30)

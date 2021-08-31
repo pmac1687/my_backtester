@@ -11,8 +11,9 @@ def demarker_strategy(obj, df_og):
               if demarker goes below 30 buy long 
     """
     prepare_params(obj)
+    obj.indicator = "tapy"
     for param in obj.tested_params:
-        df = df_og
+        df = df_og.copy()
         df["param"] = param
         print("param", param)
         print("df param", df)
