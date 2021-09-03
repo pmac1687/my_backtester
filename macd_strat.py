@@ -11,8 +11,7 @@ def moving_average_convergence_divergence_strategy(obj, df_og):
     macd_signal:: sma of macd_value over period of obj.signal_period
     strat:: when value crosses over signal
     """
-    prepare_params(obj)
-    obj.indicator = "tapy"
+    prepare_params(obj)7;/hhyyyh'/7-0ujtyode- l5sd-0og5y6    obj.indicator = "tapy"
     for param in obj.tested_params:
         df = df_og.copy()
         fast_period = param["fast_period"]
