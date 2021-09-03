@@ -18,6 +18,7 @@ def accel_decel_strategy(obj, df):
     df.fillna(0.0, inplace=True)
     long = False
     short = False
+    df["param"] = "none"
     df["signals"] = 0.0
     for i in range(len(df)):
         if df["a/d"][i] != 0.0 and i < (len(df) - 3):

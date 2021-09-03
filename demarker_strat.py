@@ -9,6 +9,7 @@ def demarker_strategy(obj, df_og):
     """
     strategy: if demarker goes above 70 sell short
               if demarker goes below 30 buy long 
+    obj.period
     """
     prepare_params(obj)
     obj.indicator = "tapy"

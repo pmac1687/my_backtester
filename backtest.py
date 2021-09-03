@@ -99,7 +99,7 @@ class Backtest:
                     self, df
                 )
 
-        if self.name == "accel/decel":
+        if self.name == "accel-decel":
             for df in self.dfs:
                 accel_decel_strat.accel_decel_strategy(self, df)
 

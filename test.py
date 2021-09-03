@@ -36,7 +36,9 @@ l = Backtest(
     shift_lips=range(3, 5, 2),
 )
 
-# l = Backtest("accel/decel", [df])
+# l = Backtest("demarker", "aapl", [df], period=range(2, 25))
+
+# l = Backtest("accel-decel", "aapl", [df])
 # l = Backtest(
 #    "rsi",
 #    "aapl",
