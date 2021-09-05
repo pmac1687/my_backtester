@@ -29,7 +29,7 @@ def get_tick_df(tick):
     for i in range(len(df)):
         dat = datetime.datetime(df["year"][i], df["month"][i], df["day"][i])
         dates.append(dat)
-    df["date"] = dates
+    df["Date"] = dates
     return df
 
 
@@ -42,7 +42,8 @@ def conduct_backtest(df, test, args):
         upper_bound=args[1],
         lower_bound=args[2],
     )
-    record.write_to_csv(test_df)
+    print(test_df)
+    # record.write_to_csv(test_df)
 
 
 def main(args, test, ticker_range):

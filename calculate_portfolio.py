@@ -103,7 +103,12 @@ def calculate_portfolio(obj, df, indicator_type):
         pass
 
     # print(df)
-    obj.df_results.append(df)
+    if len(obj.df_results == 0):
+        obj.df_results.append(df)
+    if len(obj.df_results > 0):
+        df1 = obj.df_results[0]
+        if df1["long_value"][-1] < df["long_value"][-1]:
+            obj.df_results = [df]
 
 
 if __name__ == "__main__":
